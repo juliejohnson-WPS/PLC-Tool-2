@@ -490,22 +490,20 @@
         nextStep(9);
     }
 </script>
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
+<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+
 <script>
+  // 2. The Updated Initialization Structure
   new CozeWebSDK.WebChatClient({
     config: {
-      type: 'bot',
-      botId: '7651717615039266821',
-    },
-    componentProps: {
-      title: 'PLC Instructional Coach',
+      botId: 'YOUR_EXACT_BOT_ID', // Double check this string matches your URL bar!
     },
     auth: {
       type: 'token',
-      token: 'pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4',
-      onRefreshToken: function () {
-        return 'pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4';
-      }
+      token: 'YOUR_PAT_TOKEN_HERE', // Ensure it starts with pat_
+    },
+    componentProps: {
+      title: 'PLC Coach',
     }
   });
 </script>
