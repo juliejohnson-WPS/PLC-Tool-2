@@ -495,22 +495,25 @@
         // Advance to final panel
         nextStep(9);
     }
-pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4
+
 </script>
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
       type: 'bot',
-      botId: '7651717615039266821', // Your exact bot ID matches perfectly
+      botId: '7651717615039266821',
     },
     componentProps: {
       title: 'PLC Instructional Coach',
     },
     auth: {
-      type: 'token', // This satisfies the platform's requirement
-      token: '',     // Leaving this completely empty bypasses the password wall for public sites
-    },
+      type: 'token',
+      token: 'pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4',
+      onRefreshToken: function () {
+        return 'pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4';
+      }
+    }
   });
 </script>
 </body>
