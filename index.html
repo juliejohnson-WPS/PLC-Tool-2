@@ -500,18 +500,12 @@
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
-      bot_id: '7651717615039266821',
+      type: 'bot',
+      botId: '7651717615039266821',
     },
     componentProps: {
-      title: 'Coze',
+      title: 'PLC Instructional Coach',
     },
-    auth: {
-      type: 'token',
-      token: 'pat_********',
-      onRefreshToken: function () {
-        return 'pat_********'
-      }
-    }
   });
 </script>
 </body>
