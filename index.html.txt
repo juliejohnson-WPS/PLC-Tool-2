@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Leader Reflection Tool - Cycle of Inquiry</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0d9488;
+            --accent: #f59e0b;
+            --text-dark: #1f2937;
+            --bg-light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            font-style: italic;
+            color: #6b7280;
+        }
+
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--border);
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 10%;
+            transition: width 0.3s ease;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .context-hint {
+            font-size: 0.95rem;
+            color: #4b5563;
+            margin-bottom: 15px;
+            background: #f0fdfa;
+            padding: 12px;
+            border-left: 4px solid var(--secondary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-next {
+            background-color: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-prev {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-prev:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-generate {
+            background-color: var(--accent);
+            color: #1f2937;
+        }
+
+        .btn-generate:hover {
+            background-color: #d97706;
+        }
+
+        /* Summary / Printable Plan Styles */
+        .plan-output {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .plan-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .plan-section {
+            background: var(--bg-light);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .plan-section h3 {
+            margin-top: 0;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+        }
+
+        .plan-section p {
+            margin-bottom: 0;
+            white-space: pre-wrap;
+        }
+
+        .paradigm-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+
+        .btn-print {
+            background-color: var(--secondary);
+            color: white;
+            margin: 20px auto 0 auto;
+            display: block;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+            .progress-bar-container, .btn-container, button, header p {
+                display: none !important;
+            }
+            .step-panel {
+                display: none !important;
+            }
+            .step-panel.active {
+                display: block !important;
+            }
+            .plan-output {
+                border: none;
+                padding: 0;
+            }
+            .plan-section {
+                page-break-inside: avoid;
+                border-left: 3px solid #000;
+                background: transparent;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Becoming While Doing</h1>
+        <p>A Cycle of Inquiry Reflection Tool for Learning Leaders & Organizations</p>
+    </header>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="inquiryForm" onsubmit="event.preventDefault();">
+        
+        <!-- STEP 1: Context -->
+        <div class="step-panel active" id="step1">
+            <label for="gradeLevel">Step 1: Define Your Learning Ecosystem Context</label>
+            <p class="context-hint">Every learning organization begins with context. Identify where you are leading change.</p>
+            
+            <label style="font-size: 0.9rem; color: #4b5563;">Grade Level(s):</label>
+            <input type="text" id="gradeLevel" placeholder="e.g., 4th Grade, 9-12th Grade" required>
+            
+            <label style="font-size: 0.9rem; color: #4b5563;">Course / Subject Area:</label>
+            <input type="text" id="course" placeholder="e.g., Professional Communications, Algebra 1" required>
+
+            <div class="btn-container">
+                <button type="button" class="btn-next" onclick="nextStep(2)">Begin Inquiry</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: Problem of Practice / Essential Question -->
+        <div class="step-panel" id="step2">
+            <label for="essentialQuestion">Step 2: Formulate Your Essential Question</label>
+            <p class="context-hint">As a learning leader, frame an Essential Question centered around a critical Problem of Practice. What dynamic puzzle are you trying to solve to create hope for your students?</p>
+            <textarea id="essentialQuestion" placeholder="e.g., How can we intentionally design collaborative structures so that reluctant writers build creative confidence?" required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(1)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(3)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: Question 1 - Know & Do (A) -->
+        <div class="step-panel" id="step3">
+            <label for="q1KnowDo">Step 3: What do we want students to know and be able to do?</label>
+            <p class="context-hint"><strong>Prompt 1 of 6:</strong> Pinpoint the core standards, target skills, or deep conceptual understandings you are focusing on during this cycle.</p>
+            <textarea id="q1KnowDo" placeholder="Describe the specific learning targets, outcomes, or competencies..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(2)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(4)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: Question 1 - Becoming/Growth (B) -->
+        <div class="step-panel" id="step4">
+            <label for="q1Becoming">Step 4: Nurturing the Learner</label>
+            <p class="context-hint"><strong>Prompt 2 of 6:</strong> Beyond the academic standard, what dispositions or habits of mind are students "becoming" while doing this specific work?</p>
+            <textarea id="q1Becoming" placeholder="e.g., Self-directed problem solvers, reflective editors, resilient collaborators..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(3)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(5)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 5: Question 2 - Measurement/Evidence -->
+        <div class="step-panel" id="step5">
+            <label for="q2Measure">Step 5: What will we use to measure if they are proficient?</label>
+            <p class="context-hint"><strong>Prompt 3 of 6:</strong> What evidence—both formative indicators and summative milestones—will prove that students have achieved mastery?</p>
+            <textarea id="q2Measure" placeholder="Identify the rubrics, performance tasks, checks for understanding, or balance of data you will use..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(4)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(6)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 6: Question 3 - Intervention Design -->
+        <div class="step-panel" id="step6">
+            <label for="q3NotProficient">Step 6: What are we going to do if students are not yet proficient?</label>
+            <p class="context-hint"><strong>Prompt 4 of 6:</strong> Design a systemic, supportive response. How will you intervene dynamically to create hope and pathway alternatives for those struggling?</p>
+            <textarea id="q3NotProficient" placeholder="Outline differentiated strategies, flexible re-teaching structures, or targeted scaffolds..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(5)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(7)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 7: Question 4 - Extension Design -->
+        <div class="step-panel" id="step7">
+            <label for="q4Proficient">Step 7: What are we going to do if students are already proficient?</label>
+            <p class="context-hint"><strong>Prompt 5 of 6:</strong> How will you extend the learning boundaries? What opportunities will you provide to deepen their expertise and critical thinking?</p>
+            <textarea id="q4Proficient" placeholder="Detail enrichment experiences, real-world application, or autonomous expansion strategies..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(6)">Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(8)">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 8: Continuous Professional Reflection -->
+        <div class="step-panel" id="step8">
+            <label for="plcReflection">Step 8: Our Professional Growth Continuum</label>
+            <p class="context-hint"><strong>Prompt 6 of 6:</strong> As a collective PLC of learning leaders, what must <em>we</em> learn or change in our instructional stance during this process? How are we 'becoming while doing'?</p>
+            <textarea id="plcReflection" placeholder="Reflect on your own adult learning needs, collaboration goals, or professional shifts required..." required></textarea>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-prev" onclick="prevStep(7)">Back</button>
+                <button type="button" class="btn-generate" onclick="generatePlan()">Generate My Next Step</button>
+            </div>
+        </div>
+
+        <!-- STEP 9: Final Plan Output (Printable Result) -->
+        <div class="step-panel" id="step9">
+            <div class="plan-output" id="printablePlan">
+                <div class="plan-header">
+                    <h2 style="color: var(--primary); margin-bottom: 5px;">CYCLE OF INQUIRY ACTION PLAN</h2>
+                    <p style="margin: 0; font-weight: 600; color: #4b5563;">
+                        Learning Environment: <span id="outContext" style="color: var(--secondary);"></span>
+                    </p>
+                </div>
+
+                <div class="plan-grid">
+                    <div class="plan-section">
+                        <h3>1. Focus (The Essential Question)</h3>
+                        <p id="outFocus"></p>
+                    </div>
+
+                    <div class="plan-section" style="border-left-color: var(--secondary);">
+                        <h3>2. Plan (Intentional Design: Know, Do & Become)</h3>
+                        <strong style="font-size:0.9rem; color:#6b7280;">Target Competencies:</strong>
+                        <p id="outPlanKnow" style="margin-bottom:10px;"></p>
+                        <strong style="font-size:0.9rem; color:#6b7280;">Student Growth & Identity:</strong>
+                        <p id="outPlanBecome"></p>
+                    </div>
+
+                    <div class="plan-section" style="border-left-color: var(--accent);">
+                        <h3>3. Implement & Assess (Evidence of Mastery)</h3>
+                        <p id="outAssess"></p>
+                    </div>
+
+                    <div class="plan-section" style="border-left-color: #ef4444;">
+                        <h3>4. Responsive Action (Intervention & Extension)</h3>
+                        <strong style="font-size:0.9rem; color:#6b7280;">When not yet proficient (Creating Hope):</strong>
+                        <p id="outIntervention" style="margin-bottom:10px;"></p>
+                        <strong style="font-size:0.9rem; color:#6b7280;">When proficient (Extending Boundaries):</strong>
+                        <p id="outExtension"></p>
+                    </div>
+
+                    <div class="plan-section" style="border-left-color: #7c3aed;">
+                        <h3>5. Reflect (Becoming While Doing)</h3>
+                        <p id="outReflect"></p>
+                    </div>
+                </div>
+
+                <div class="paradigm-footer">
+                    <p>"We change our practices by changing our lens, transforming our learning organization from the inside out."</p>
+                </div>
+            </div>
+
+            <button type="button" class="btn-print" onclick="window.print()">Print/Save Inquiry Plan</button>
+            <div class="btn-container" style="margin-top: 20px;">
+                <button type="button" class="btn-prev" onclick="prevStep(8)">Edit Responses</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    const totalSteps = 9;
+
+    function updateProgressBar(currentStep) {
+        const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        document.getElementById('progressBar').style.width = percentage + '%';
+    }
+
+    function nextStep(stepNumber) {
+        // Validation check for the currently active step inputs
+        const currentActive = document.querySelector('.step-panel.active');
+        const inputs = currentActive.querySelectorAll('input, textarea');
+        let allValid = true;
+
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                allValid = false;
+            }
+        });
+
+        if (!allValid) return;
+
+        // Transition views
+        currentActive.classList.remove('active');
+        document.getElementById('step' + stepNumber).classList.add('active');
+        updateProgressBar(stepNumber);
+    }
+
+    function prevStep(stepNumber) {
+        document.querySelector('.step-panel.active').classList.remove('active');
+        document.getElementById('step' + stepNumber).classList.add('active');
+        updateProgressBar(stepNumber);
+    }
+
+    function generatePlan() {
+        // Double-check validation for step 8 before continuing
+        const currentActive = document.querySelector('.step-panel.active');
+        const textarea = currentActive.querySelector('textarea');
+        if (!textarea.checkValidity()) {
+            textarea.reportValidity();
+            return;
+        }
+
+        // Gather Values
+        const grade = document.getElementById('gradeLevel').value;
+        const course = document.getElementById('course').value;
+        const eq = document.getElementById('essentialQuestion').value;
+        const knowDo = document.getElementById('q1KnowDo').value;
+        const becoming = document.getElementById('q1Becoming').value;
+        const measure = document.getElementById('q2Measure').value;
+        const intervention = document.getElementById('q3NotProficient').value;
+        const extension = document.getElementById('q4Proficient').value;
+        const reflect = document.getElementById('plcReflection').value;
+
+        // Map Values to Output Section
+        document.getElementById('outContext').innerText = `${grade} — ${course}`;
+        document.getElementById('outFocus').innerText = eq;
+        document.getElementById('outPlanKnow').innerText = knowDo;
+        document.getElementById('outPlanBecome').innerText = becoming;
+        document.getElementById('outAssess').innerText = measure;
+        document.getElementById('outIntervention').innerText = intervention;
+        document.getElementById('outExtension').innerText = extension;
+        document.getElementById('outReflect').innerText = reflect;
+
+        // Advance to final panel
+        nextStep(9);
+    }
+</script>
+
+</body>
+</html>
