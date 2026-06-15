@@ -497,14 +497,15 @@
 </script>
 
 <!-- Coze Public Web Widget (Token-Free & Formatted to Force-Render) -->
-<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.0.0-beta.4/libs/oversea/index.js"></script>
+<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 <script>
-  new CozeWebSDK.WebChatClient({
+  // Force clean initialization container onto the window DOM
+  const cozeChat = new CozeWebSDK.WebChatClient({
     config: {
-      botId: '7651717615039266821'
+      botId: '7651717615039266821',
     },
     componentProps: {
-      title: 'PLC Coach'
+      title: 'PLC Coach',
     }
   });
 </script>
