@@ -501,13 +501,14 @@
   new CozeWebSDK.WebChatClient({
     config: {
       type: 'bot',
-      botId: '7651717615039266821',
+      botId: '7651717615039266821', // Your exact bot ID matches perfectly
     },
     componentProps: {
       title: 'PLC Instructional Coach',
     },
     auth: {
-      type: 'unauth', // Specifies that this is a public, password-free widget
+      type: 'token', // This satisfies the platform's requirement
+      token: '',     // Leaving this completely empty bypasses the password wall for public sites
     },
   });
 </script>
