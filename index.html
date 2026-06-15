@@ -222,6 +222,11 @@
             display: block;
         }
 
+        /* Prevent Coze structural overlay shift issues */
+        .coze-chat-bubble {
+            z-index: 99999 !important;
+        }
+
         /* Print Media Styles */
         @media print {
             body {
@@ -490,22 +495,23 @@
         nextStep(9);
     }
 </script>
-<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 
+<!-- Coze Web SDK Client Stack -->
+<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 <script>
-  // 2. The Updated Initialization Structure
   new CozeWebSDK.WebChatClient({
     config: {
-      botId: 'YOUR_EXACT_BOT_ID', // Double check this string matches your URL bar!
+      botId: '7651717615039266821',
     },
     auth: {
       type: 'token',
-      token: 'YOUR_PAT_TOKEN_HERE', // Ensure it starts with pat_
+      token: 'pat_TLUvDQhJPcWoeTPLBzaQSnhHvb4gMYPG39s5oXfOsvVRx62XxBSKCVg5debZWdN4',
     },
     componentProps: {
       title: 'PLC Coach',
     }
   });
 </script>
+
 </body>
 </html>
