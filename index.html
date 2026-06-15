@@ -495,20 +495,31 @@
         nextStep(9);
     }
 </script>
+<div id="gemini-chat-wrapper" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; font-family: sans-serif;">
+  <button id="gemini-toggle-btn" onclick="toggleGeminiChat()" style="background: #1e3a8a; color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 24px; display: flex; align-items: center; justify-content: center;">
+    💬
+  </button>
 
-<!-- Coze Public Web Widget (Token-Free & Formatted to Force-Render) -->
-<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+  <div id="gemini-chat-window" style="display: none; width: 350px; height: 450px; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border: 1px solid #e5e7eb; flex-direction: column; position: absolute; bottom: 75px; right: 0; overflow: hidden;">
+    <div style="background: #1e3a8a; color: white; padding: 15px; font-weight: bold; font-size: 16px;">
+      PLC Coach (Gemini)
+    </div>
+    <div id="gemini-chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; font-size: 14px; display: flex; flex-direction: column; gap: 10px; background: #f9fafb;">
+      <div style="background: #e5e7eb; color: #1f2937; padding: 8px 12px; border-radius: 8px; align-self: flex-start; max-width: 80%;">
+        Hello! I am your PLC Coach. Ask me anything about your Cycle of Inquiry!
+      </div>
+    </div>
+    <div style="padding: 10px; border-top: 1px solid #e5e7eb; display: flex; gap: 5px; background: white;">
+      <input type="text" id="gemini-user-input" placeholder="Type a message..." style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; margin-bottom: 0;" onkeypress="if(event.key === 'Enter') sendToGemini()">
+      <button onclick="sendToGemini()" style="background: #0d9488; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Send</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Force clean initialization container onto the window DOM
-  const cozeChat = new CozeWebSDK.WebChatClient({
-    config: {
-      botId: '7651717615039266821',
-    },
-    componentProps: {
-      title: 'PLC Coach',
-    }
-  });
-</script>
+
+    <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2026/06/15/23/20260615232418-PWZF74SB.js" defer></script>
 
 </body>
 </html>
