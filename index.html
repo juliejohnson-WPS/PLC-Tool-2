@@ -436,7 +436,6 @@
     }
 
     function nextStep(stepNumber) {
-        // Validation check for the currently active step inputs
         const currentActive = document.querySelector('.step-panel.active');
         const inputs = currentActive.querySelectorAll('input, textarea');
         let allValid = true;
@@ -450,7 +449,6 @@
 
         if (!allValid) return;
 
-        // Transition views
         currentActive.classList.remove('active');
         document.getElementById('step' + stepNumber).classList.add('active');
         updateProgressBar(stepNumber);
@@ -463,7 +461,6 @@
     }
 
     function generatePlan() {
-        // Double-check validation for step 8 before continuing
         const currentActive = document.querySelector('.step-panel.active');
         const textarea = currentActive.querySelector('textarea');
         if (!textarea.checkValidity()) {
@@ -471,7 +468,6 @@
             return;
         }
 
-        // Gather Values
         const grade = document.getElementById('gradeLevel').value;
         const course = document.getElementById('course').value;
         const eq = document.getElementById('essentialQuestion').value;
@@ -482,7 +478,6 @@
         const extension = document.getElementById('q4Proficient').value;
         const reflect = document.getElementById('plcReflection').value;
 
-        // Map Values to Output Section
         document.getElementById('outContext').innerText = `${grade} — ${course}`;
         document.getElementById('outFocus').innerText = eq;
         document.getElementById('outPlanKnow').innerText = knowDo;
@@ -492,10 +487,8 @@
         document.getElementById('outExtension').innerText = extension;
         document.getElementById('outReflect').innerText = reflect;
 
-        // Advance to final panel
         nextStep(9);
     }
-
 </script>
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
